@@ -22,7 +22,9 @@ public class SecurityConfig {
             .httpBasic(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/usuarios/cadastro", "/api/auth/login").permitAll()
+
+                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/usuarios/cadastro", "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/locais/**", "/api/recursos/**",
                         "/api/relatos/**", "/api/avisos-operacionais/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/locais/**").hasRole("ADMIN")
