@@ -40,7 +40,7 @@ public class AuthService {
         Instant agora = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(JwtConfig.ISSUER)
-                .subject(usuario.getEmail())
+                .subject(usuario.getId().toString())
                 .issuedAt(agora)
                 .expiresAt(agora.plus(60, ChronoUnit.MINUTES))
                 .claim("perfil", usuario.getPerfil().name())

@@ -1,5 +1,6 @@
 package br.com.fiap.acessolivre.controller;
 
+import br.com.fiap.acessolivre.dto.AtribuirResponsavelRequest;
 import br.com.fiap.acessolivre.dto.LocalRequest;
 import br.com.fiap.acessolivre.dto.LocalResponse;
 import br.com.fiap.acessolivre.service.LocalService;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.net.URI;
+
 @RestController
 @RequestMapping("/api/locais")
 @RequiredArgsConstructor
@@ -39,10 +42,15 @@ public class LocalController {
         return ResponseEntity.ok(service.atualizar(id, request));
     }
 
+    @PutMapping("/{id}/responsavel")
+    public ResponseEntity<LocalResponse> atribuirResponsavel(@PathVariable Long id,
+            @Valid @RequestBody AtribuirResponsavelRequest request) {
+        return ResponseEntity.ok(service.atribuirResponsavel(id, request));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
 }
-

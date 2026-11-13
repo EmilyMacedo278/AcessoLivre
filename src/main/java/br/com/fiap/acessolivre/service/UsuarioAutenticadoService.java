@@ -17,28 +17,36 @@ import org.springframework.web.server.ResponseStatusException;
 public class UsuarioAutenticadoService {
     private final UsuarioRepository usuarios;
 
-    // O login JWT deverá usar o e-mail como Authentication.getName().
-    // O usuário temporário 'user' do Spring Boot NÃO é um usuário do banco.
+    // O 'sub' do JWT agora é o ID imutável do usuário, e não seu e-mail.
     public Usuario atual() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "É necessário fazer login");
         }
-        return usuarios.findByEmailIgnoreCase(auth.getName())
+        Long usuarioId;
+        try {
+            usuarioId = Long.valueOf(auth.getName());
+        } catch (NumberFormatException ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "Token inválido: identificador do usuário incorreto");
+        }
+        return usuarios.findById(usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.FORBIDDEN, "Conta autenticada não está cadastrada no AcessoLivre"));
+                        HttpStatus.UNAUTHORIZED, "Conta autenticada não está cadastrada no AcessoLivre"));
     }
 
     public void exigirAdmin() {
         if (atual().getPerfil() != Perfil.ADMIN) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Apenas administradores podem realizar esta ação");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Apenas administradores podem realizar esta ação");
         }
     }
 
     public void exigirProprioOuAdmin(Long usuarioId) {
         Usuario atual = atual();
         if (atual.getPerfil() != Perfil.ADMIN && !atual.getId().equals(usuarioId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode alterar esta conta");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Você não pode alterar esta conta");
         }
     }
 
