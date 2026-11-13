@@ -14,5 +14,19 @@ services:
     volumes:
       - acessolivre_data:/var/lib/mysql
 
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: acessolivre-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - acessolivre_rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   acessolivre_data:
+  acessolivre_rabbitmq_data:
