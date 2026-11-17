@@ -1,0 +1,35 @@
+
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+
+  - bash: |
+      export JAVA_HOME="$JAVA_HOME_17_X64"
+      export PATH="$JAVA_HOME/bin:$PATH"
+      java -version
+      chmod +x gradlew
+      ./gradlew --no-daemon clean test bootJar
+    displayName: 'Compilar e testar Java 17'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/build/test-results/test/TEST-*.xml'
+      testRunTitle: 'AcessoLivre - Testes Java'
+
+  - publish: '$(Build.SourcesDirectory)/build/libs'
+    artifact: 'acessolivre-jar'
+    displayName: 'Publicar artefato JAR'
