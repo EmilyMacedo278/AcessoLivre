@@ -1,0 +1,13 @@
+
+.git
+.gradle
+.idea
+build
+.env
+.env.*
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
