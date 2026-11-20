@@ -397,9 +397,9 @@ Integrante	RM
 Emily Maria de Oliveira Macedo	RM554882
 
 
-Repositório GitHub (se aplicável à entrega Java): [inserir URL real]
+Repositório GitHub (se aplicável à entrega Java): [[inserir URL real]](https://github.com/EmilyMacedo278/AcessoLivre.git)
 
-Link do vídeo pitch: [inserir URL quando publicado]
+Link do vídeo pitch: [[inserir URL quando publicado]](https://youtu.be/ng1OtAtBg_g?si=cvfmm-JGcAzLqPiO)
 
 Deploy Azure (IP observado, ainda sem teste HTTP validado nesta revisão): http://4.253.123.110:8080
 
